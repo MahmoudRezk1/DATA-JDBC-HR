@@ -1,6 +1,7 @@
 package com.globalhr.datajdbchrproject.entity;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -13,7 +14,8 @@ public class Employee {
     private String name;
     @Column("salary")
     private Double salary;
-
+    @Transient
+    private int isCreate;
     public Employee() {
     }
 
@@ -27,6 +29,15 @@ public class Employee {
         this.name = name;
         this.salary = salary;
     }
+
+    public int getIsCreate() {
+        return isCreate;
+    }
+
+    public void setIsCreate(int isCreate) {
+        this.isCreate = isCreate;
+    }
+
 
     public Integer getEmployeeID() {
         return employeeID;

@@ -1,46 +1,50 @@
 package com.globalhr.datajdbchrproject.controller;
 
 import com.globalhr.datajdbchrproject.entity.Employee;
-import com.globalhr.datajdbchrproject.repository.EmployeeRepo;
+import com.globalhr.datajdbchrproject.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 @RequestMapping(value = "/employee")
 public class EmployeeController {
     @Autowired
-    private EmployeeRepo employeeRepo;
+    private EmployeeService employeeService;
     @GetMapping("/countEmployees")
     public Long countEmp(){
 
-        return this.employeeRepo.count();
+        return employeeService.countEmp();
     }
     @GetMapping("/findEmployees")
     public Iterable<Employee> findEmp(){
-        return this.employeeRepo.findAll();
+        return employeeService.findEmp();
     }
     @GetMapping("/findEmployeesByID/{id}")
     public Employee findEmpByID(@PathVariable Integer id){
-        Optional<Employee> emp= employeeRepo.findById(id);
-        if(emp.isPresent())
-        return emp.get();
-        else return null;
+        return employeeService.findEmpByID(id);
     }
-    @GetMapping("/addEmployee")
-    public Employee addEmp(){
-        return employeeRepo.save(new Employee("sahar",6000.0));
+    @PostMapping("/addEmployee")
+    public Employee addEmp(@RequestBody Employee employee){
+        return employeeService.addEmp(employee);
 
     }
-    @GetMapping("/updateEmployee")
-    public Employee updateEmp(){
-        return employeeRepo.save(new Employee(5,"sahar",8000.0));
+    @PutMapping("/updateEmployee")
+    public Employee updateEmp(@RequestBody Employee employee){
+        return employeeService.updateEmp(employee);
 
     }
     @GetMapping("/findEmployeesByName/{name}")
     public List<Employee> findEmpByName(@PathVariable String name){
-        return this.employeeRepo.findByName(name);
+        return employeeService.findEmpByName(name);
+    }
+    @DeleteMapping("/deleteEmployee/{id}")
+    public void deleteById(@PathVariable  Integer id){
+        employeeService.deleteById(id);
+    }
+    @PutMapping("/updateEmpByIdAndSalary")
+    public int updateEmpByIdAndSalary(@RequestParam Double salary,@RequestParam Integer id){
+        return employeeService.updateEmpByIdAndSalary(salary,id);
     }
 }
